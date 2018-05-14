@@ -47,9 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MergeFileHelper.cs" />
+    <Compile Include="DirectlyWorkExample\ExampleCollection.cs" />
+    <Compile Include="MultiWaveChannelMergeHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WaveConcatenateHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

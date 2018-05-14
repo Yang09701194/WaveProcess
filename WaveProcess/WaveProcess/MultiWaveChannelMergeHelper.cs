@@ -7,14 +7,22 @@ using NAudio.Wave;
 
 namespace WaveProcess
 {
+    /// <summary>
+    /// 詳細說明  見ExampleCollection.cs
+    /// </summary>
     public class MultiWaveChannelMergeHelper
     {
-        public static void Merge_2FilesWith1Channel_To_OneFileWith2Channel()
+        /// <summary>
+        /// 把兩個單音軌的檔案  合併為一個雙聲道的檔案
+        /// </summary>
+        /// <param name="inputWavFilePath1">wav檔1</param>
+        /// <param name="inputWavFilePath2">wav檔2</param>
+        /// <param name="outputFilePath">合併輸出到</param>
+        public static void Merge_2FilesWith1Channel_To_OneFileWith2Channel
+            (string inputWavFilePath1, string inputWavFilePath2, string outputFilePath)
         {
-
-            var wav1Reader = new WaveFileReader(@"E:\Dropbox\WorkGrandsys\W\Workarea\20180511音檔 - 複製\1_8690002555DA7B59370000037\0_00001_0000364_0000837.wav");
-            var wav2Reader = new WaveFileReader(@"E:\Dropbox\WorkGrandsys\W\Workarea\20180511音檔 - 複製\1_8690002555DA7B59370000037\0_00002_0001228_0001566.wav");
-
+            var wav1Reader = new WaveFileReader(inputWavFilePath1);
+            var wav2Reader = new WaveFileReader(inputWavFilePath2);
 
             List<IWaveProvider> inputs = new List<IWaveProvider>() { wav1Reader, wav2Reader };
             MultiplexingWaveProvider waveProvider = new MultiplexingWaveProvider(inputs, 2);
@@ -25,7 +33,8 @@ namespace WaveProcess
             byte[] buffer = new byte[2 * wav1Reader.WaveFormat.SampleRate * wav1Reader.WaveFormat.Channels];
 
             using (
-                WaveFileWriter writer = new WaveFileWriter(@"E:\Dropbox\WorkGrandsys\W\Workarea\20180511音檔 - 複製\output\merge.wav", new WaveFormat(wav1Reader.WaveFormat.SampleRate, 16, 2))
+                WaveFileWriter writer = new WaveFileWriter(outputFilePath,
+                    new WaveFormat(wav1Reader.WaveFormat.SampleRate, 16, 2))
                 )
             {
                 int bytesRead;
@@ -35,8 +44,6 @@ namespace WaveProcess
                 }
             }
         }
-
-
 
     }
 }
