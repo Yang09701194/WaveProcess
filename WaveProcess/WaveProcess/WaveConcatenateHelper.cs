@@ -18,16 +18,13 @@ namespace WaveProcess
         /// 輸出路徑是   "{0}\\EachFolderConcatenateResult\\{1}.wav"
         /// </summary>
         /// <param name="folderFileTimes"></param>
-        public static void ProcessSlienceAndConcatenate(Folder_FileTimes folderFileTimes)
+        public static void ProcessSlienceAndConcatenate(string outpuyfolderPath, Folder_FileTimes folderFileTimes)
         {
             //合併用的writer
             WaveFileWriter waveFileWriter = null;
-            string outputFilePath = String.Format("{0}\\EachFolderConcatenateResult\\{1}.wav",
-                Path.GetDirectoryName(folderFileTimes.FolderPath), 
-                Path.GetFileName(folderFileTimes.FolderPath));
-
-            Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
-
+            string outputFilePath = String.Format("{0}\\{1}.wav",
+                outpuyfolderPath, Path.GetFileName(folderFileTimes.FolderPath));
+            
             try
             {
                 int previousEnd = 0;
@@ -43,31 +40,45 @@ namespace WaveProcess
                             throw new InvalidOperationException(
                                 "Can't concatenate WAV Files that don't share the same format");
 
-                        //write previous silence
-                        if (wavFileInfo.StartMilliseconds < previousEnd)
-                            throw new Exception
-                                ("後一個路徑音檔時間開頭毫秒數 不可大於 前一個音檔結束毫秒數，\n毫秒結尾:" + previousEnd + "\n後一個音檔" + wavFileInfo.FilePath);
-                        int silenceMilliSecond = wavFileInfo.StartMilliseconds - previousEnd;
-                        var silentBytes = GetSilenceBytes(silenceMilliSecond, 1);//原始音檔都是 1 channel
-                        waveFileWriter.Write(silentBytes, 0, silentBytes.Length);
+                        int bytesPerMillisecond = reader.WaveFormat.AverageBytesPerSecond / 1000;
 
-                        //write current wav
-                        byte[] buffer = new byte[1024];
-                        int readBytes;
-                        while ((readBytes = reader.Read(buffer, 0, buffer.Length)) > 0)
+                        //跟前個音檔開頭   有時間重複   則不加靜音   用前面的結尾蓋掉後面開頭
+                        //實際做法是  不取目前檔案開頭的  重複的時間長度
+                        if (wavFileInfo.StartMilliseconds < previousEnd)
                         {
-                            waveFileWriter.Write(buffer, 0, readBytes);
+                            LogHelper.Log("後一個路徑音檔時間開頭毫秒數 小於 前一個音檔結束毫秒數，\n毫秒結尾:" + previousEnd + "\n後一個音檔" +
+                                 wavFileInfo.FilePath);
+                            //NO write silence
+                            //write current wav, start with 重複時間長度
+                            reader.Position = (previousEnd - wavFileInfo.StartMilliseconds) * bytesPerMillisecond;
+                            byte[] buffer = new byte[1024];
+                            int readBytes;
+                            while ((readBytes = reader.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                waveFileWriter.Write(buffer, 0, readBytes);
+                            }
+                        }
+                        else
+                        {
+                            //write previous silence
+                            int silenceMilliSecond = wavFileInfo.StartMilliseconds - previousEnd;
+                            var silentBytes = new byte[silenceMilliSecond * bytesPerMillisecond];
+                            waveFileWriter.Write(silentBytes, 0, silentBytes.Length);
+                            //write current wav
+                            byte[] buffer = new byte[1024];
+                            int readBytes;
+                            while ((readBytes = reader.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                waveFileWriter.Write(buffer, 0, readBytes);
+                            }
                         }
                     }
                     previousEnd = wavFileInfo.EndMilliseconds;
                 }
             }
-            catch (Exception e)
-            {
-                ErrorRecordHelper.Record(e);
-            }
+            catch (Exception e){LogHelper.LogError(e);}
             finally
-            {
+            {   //一定要記得Dispose  wav才會正確寫入
                 if (waveFileWriter != null) { waveFileWriter.Dispose(); }
             }
         }
@@ -87,6 +98,10 @@ namespace WaveProcess
         /// 而所謂的Silence 由 ExampleCollection.CreateSampleWavFile
         /// 可知  Byte就是紀錄聲音的波動
         /// 所以理論上只要全部給0  沒有波動  那一段就會是靜音吧
+        /// 
+        /// 但是後來發現更好的做法
+        /// int bytesPerMillisecond = reader.WaveFormat.AverageBytesPerSecond / 1000;
+        /// 就可以直接計算了
         /// </summary>
         /// <param name="milliSecond">要產生的靜音毫秒數長度</param>
         /// <param name="channel">聲道數  1 或 2</param>
@@ -161,4 +176,10 @@ namespace WaveProcess
         }
 
     }
+
+
+
+
+
+
 }

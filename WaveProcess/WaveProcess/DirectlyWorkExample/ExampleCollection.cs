@@ -127,7 +127,7 @@ namespace WaveProcess.DirectlyWorkExample
                 writer.Write(testBytes, 0, testBytes.Length);
             }
 
-            WaveFileReader reader = new WaveFileReader(@"E:\Dropbox\WorkGrandsys\W\Workarea\20180511音檔 - 複製\output\testSample.wav");
+            WaveFileReader reader = new WaveFileReader(@"E:\GS2018\E\Yang\Program\Git\GitYang\WaveProcess\WaveProcess\TestWavFile\EachWavFolderConcatenate\test.wav");
 
             TimeSpan t = reader.TotalTime;
             double millisecond = t.TotalMilliseconds;
@@ -146,6 +146,22 @@ namespace WaveProcess.DirectlyWorkExample
             double millisecond2 = t2.TotalMilliseconds;
             millisecond2 = millisecond2;
         }
+
+
+
+        public static void TestTrimWavFile()
+        {
+
+            TrimWavFileHelper.TrimWavFile(
+                @"E:\GS2018\E\Yang\Program\Git\GitYang\WaveProcess\WaveProcess\TestWavFile\output\TestConcatenate.wav",
+                @"E:\GS2018\E\Yang\Program\Git\GitYang\WaveProcess\WaveProcess\TestWavFile\output\TestTrim.wav",
+                new TimeSpan(), TimeSpan.FromSeconds(10) );
+
+
+        }
+
+
+
 
 
 

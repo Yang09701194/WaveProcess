@@ -49,13 +49,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DirectlyWorkExample\ExampleCollection.cs" />
-    <Compile Include="ErrorRecordHelper.cs" />
+    <Compile Include="LogHelper.cs" />
     <Compile Include="FileNameProcessHelper.cs" />
     <Compile Include="MultiWaveChannelMergeHelper.cs" />
     <Compile Include="Object\FileTimeInfo.cs" />
     <Compile Include="Object\Folder_FileTimes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrimWavFileHelper.cs" />
     <Compile Include="WaveConcatenateHelper.cs" />
   </ItemGroup>
   <ItemGroup>
