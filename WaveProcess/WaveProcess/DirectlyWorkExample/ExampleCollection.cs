@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using NAudio.Wave;
@@ -83,13 +84,70 @@ namespace WaveProcess.DirectlyWorkExample
                 else
                     testBytes[i] = (byte)200;
             }
-            
-            using(
-              WaveFileWriter writer = new WaveFileWriter(@"E:\Dropbox\WorkGrandsys\W\Workarea\20180511音檔 - 複製\output\testSample.wav", new WaveFormat(8000, 16, 2/*輸出為雙聲道*/))
-            ){
+
+            using (
+           WaveFileWriter writer = new WaveFileWriter(@"E:\Dropbox\WorkGrandsys\W\Workarea\20180511音檔 - 複製\output\testSample.wav", new WaveFormat(8000, 16, 2/*輸出為雙聲道*/))
+           )
+            {
                 writer.Write(testBytes, 0, testBytes.Length);
             }
         }
+
+        public static void CreatBigeSampleWavFile()
+        {
+            //*****參考用  最下面測的才準******
+            //剛才測試發現  音檔SampleRate是8000
+            //https://stackoverflow.com/questions/5017367/audio-samples-per-second
+            //PCM samples you can divide the total length (in bytes) by the duration (in seconds) to get 
+            //****the number of bytes per second****
+            //所以代表  8000bytes / 1 sec
+
+
+            byte[] testBytes = new byte[10000000];
+            for (int i = 0; i < testBytes.Length; i++)
+            {
+                //被我猜到了  還真的類似  用byte array紀錄波動值 不過這還是用猜的
+                //所以如果像是這樣  把所有值  都設成一樣  就沒有聲音
+                //我猜   是類似   音響的膜固定在一個點  不動  所以不震動就沒有聲音
+                testBytes[i] = (byte)100;
+
+                //但是如果像這樣  讓他 每位移5  規律的在100-200跳動
+                //這個化成波形圖應該會像是  -----_____-----______
+                //結果就可以聽到  固定頻率的 逼 聲
+                if (i % 1000 < 500)
+                    testBytes[i] = (byte)100;
+                else
+                    testBytes[i] = (byte)200;
+            }
+
+            using (
+     WaveFileWriter writer = new WaveFileWriter(@"E:\Dropbox\WorkGrandsys\W\Workarea\20180511音檔 - 複製\output\testSample.wav", new WaveFormat(8000, 16, 1/*輸出聲道數*/))
+            )
+            {
+                writer.Write(testBytes, 0, testBytes.Length);
+            }
+
+            WaveFileReader reader = new WaveFileReader(@"E:\Dropbox\WorkGrandsys\W\Workarea\20180511音檔 - 複製\output\testSample.wav");
+
+            TimeSpan t = reader.TotalTime;
+            double millisecond = t.TotalMilliseconds;
+            millisecond = millisecond;
+
+            //上面結果
+            //sample rate 8000, 2  channel 
+            //10000000 bytes > 312500 ms
+            
+            //sample rate 8000, 2  channel  >>  1 milisecond = 32byte   耶@@  竟然可以整除!!　
+            //sample rate 8000, 1  channel  >>  1 milisecond = 16byte   
+
+            WaveFileReader reader2 = new WaveFileReader(@"E:\Dropbox\WorkGrandsys\W\Workarea\20180511音檔 - 複製\1_8690002555DA7B59370000037\0_00001_0000364_0000837.wav");
+            var format = reader2.WaveFormat;
+            TimeSpan t2 = reader2.TotalTime;
+            double millisecond2 = t2.TotalMilliseconds;
+            millisecond2 = millisecond2;
+        }
+
+
 
 
 
