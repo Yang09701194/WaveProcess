@@ -31,7 +31,6 @@ namespace Test
 
             Console.Read();
 
-            var v = Get();
         }
 
 

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveProcess", "WaveProcess\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{66180D59-2BE3-4014-B97F-272F8486B7AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveProcessUI", "WaveProcessUI\WaveProcessUI.csproj", "{5B651B02-A57A-4B6A-BD51-B6F5C44862F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{66180D59-2BE3-4014-B97F-272F8486B7AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66180D59-2BE3-4014-B97F-272F8486B7AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66180D59-2BE3-4014-B97F-272F8486B7AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B651B02-A57A-4B6A-BD51-B6F5C44862F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B651B02-A57A-4B6A-BD51-B6F5C44862F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B651B02-A57A-4B6A-BD51-B6F5C44862F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B651B02-A57A-4B6A-BD51-B6F5C44862F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

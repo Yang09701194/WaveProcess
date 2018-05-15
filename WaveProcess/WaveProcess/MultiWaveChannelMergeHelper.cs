@@ -15,15 +15,9 @@ namespace WaveProcess
     /// </summary>
     public class MultiWaveChannelMergeHelper
     {
-        public static void ConcatenatedFiles_Merge2Channel(string concatenatedFolderPath)
+        public static void ConcatenatedFiles_Merge2Channel(string outputFolderPath, string concatenatedFolderPath)
         {
             string[] concatenatedfiles = Directory.GetFiles(concatenatedFolderPath);
-
-            string outputFolderPath = Path.GetDirectoryName(concatenatedFolderPath) +"\\" + "Result";
-            if (Directory.Exists(outputFolderPath))
-                Directory.Delete(outputFolderPath, true);
-            Thread.Sleep(2000);
-            Directory.CreateDirectory(outputFolderPath);
             
             Dictionary<string, List<string>> dic_Key_2ChannelFiles = new Dictionary<string, List<string>>();
 
@@ -55,7 +49,7 @@ namespace WaveProcess
                 {
                     var files = key2Files.Value;
                     Merge_2FilesWith1Channel_To_OneFileWith2Channel(files[0], files[1],
-                        outputFolderPath + "\\" + key2Files.Key + ".wav");
+                        outputFolderPath + "\\" + key2Files.Key);
                 }
                 catch (Exception e){ LogHelper.LogError(e); }
             }

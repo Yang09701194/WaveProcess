@@ -46,7 +46,7 @@ namespace WaveProcess
                         //實際做法是  不取目前檔案開頭的  重複的時間長度
                         if (wavFileInfo.StartMilliseconds < previousEnd)
                         {
-                            LogHelper.Log("後一個路徑音檔時間開頭毫秒數 小於 前一個音檔結束毫秒數，\n毫秒結尾:" + previousEnd + "\n後一個音檔" +
+                            LogHelper.Log("後一個路徑音檔時間開頭毫秒數 小於 前一個音檔結束毫秒數，\r\n毫秒結尾:" + previousEnd + "\r\n後一個音檔，已將  前個音檔的結尾重複區間  覆蓋後方音檔開頭" +
                                  wavFileInfo.FilePath);
                             //NO write silence
                             //write current wav, start with 重複時間長度

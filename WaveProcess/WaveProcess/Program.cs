@@ -22,7 +22,6 @@ namespace WaveProcess
             //WaveConcatenateHelper.Test();
             //ExampleCollection.CreatBigeSampleWavFile();
             ExampleCollection.TestTrimWavFile();
-
             //return;
 
             string wavParentFolder = @"E:\GS2018\E\Yang\Program\Git\GitYang\WaveProcess\WaveProcess\TestWavFile\WaveFiles";
@@ -43,7 +42,14 @@ namespace WaveProcess
                 WaveConcatenateHelper.ProcessSlienceAndConcatenate(concatenateOutputFolder, folderFileTimes);
             }
 
-            MultiWaveChannelMergeHelper.ConcatenatedFiles_Merge2Channel(concatenateOutputFolder);
+            string outputFolderPath = Path.GetDirectoryName(concatenateOutputFolder) + "\\" + "Result";
+            if (Directory.Exists(outputFolderPath))
+                Directory.Delete(outputFolderPath, true);
+            Thread.Sleep(2000);
+            Directory.CreateDirectory(outputFolderPath);
+
+            MultiWaveChannelMergeHelper.ConcatenatedFiles_Merge2Channel
+                (outputFolderPath, concatenateOutputFolder);
         }
     }
 }
