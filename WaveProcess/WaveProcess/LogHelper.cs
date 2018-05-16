@@ -21,13 +21,13 @@ namespace WaveProcess
         public static void LogError(Exception e)
         {
             //MessageBox.Show(e.Message);
-            SimpleErrors.Add(DateTime.Now.ToString("s")+e.Message);
-            DetailedErrors.Add(DateTime.Now.ToString("s")+e.ToString());
+            SimpleErrors.Add(DateTime.Now.ToString("s")+" "+e.Message);
+            DetailedErrors.Add(DateTime.Now.ToString("s")+" "+e.ToString());
         }
 
         public static void Log(string s)
         {
-            Logs.Add(DateTime.Now.ToString("s")+s);
+            Logs.Add(DateTime.Now.ToString("s")+" "+s);
         }
         
 

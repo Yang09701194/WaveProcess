@@ -80,6 +80,8 @@ namespace WaveProcessUI
 
         private void AppendUILog(string message)
         {
+            if (String.IsNullOrWhiteSpace(message))
+                return;
             TbxExeMsg.Text += "\r\n" + DateTime.Now.ToString("T") +" " + message + "\r\n";
         }
 
